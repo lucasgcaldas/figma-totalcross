@@ -1,12 +1,9 @@
 package com.convert.model;
 
-import com.convert.model.util.Components;
-import com.convert.model.util.Style;
-
 public class Application {
 
     private Document document;
-//    private Components components;
+//    private Components[] components;
 //    private String[] componentSets;
     private Integer schemaVersion;
 //    private Style[] styles;
@@ -16,4 +13,36 @@ public class Application {
     private String version;
     private String role;
     private String editorType;
+
+    public Document getDocument() {
+        return document;
+    }
+
+    public Integer getSchemaVersion() {
+        return schemaVersion;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getEditorType() {
+        return editorType;
+    }
 }

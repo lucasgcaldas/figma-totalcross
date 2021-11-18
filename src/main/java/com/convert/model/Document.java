@@ -6,6 +6,22 @@ public class Document {
 
     private String id;
     private String name;
-    private Type type;
+    private String type;
     private Node[] children;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Node[] getChildren() {
+        return children;
+    }
 }

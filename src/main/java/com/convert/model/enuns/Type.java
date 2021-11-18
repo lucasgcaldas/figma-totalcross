@@ -2,6 +2,7 @@ package com.convert.model.enuns;
 
 public enum Type {
 
+    DOCUMENT,
     FRAME,
     VECTOR,
     SOLID,

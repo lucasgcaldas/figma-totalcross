@@ -9,7 +9,7 @@ public class FigmaCanvas {
 
     private String id;
     private String name;
-    private Type type;
+    private String type;
     private FigmaFrame[] children;
     private Color backgroundColor;
     private String prototypeStartNodeID;
