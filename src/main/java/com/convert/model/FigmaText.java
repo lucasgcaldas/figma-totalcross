@@ -1,8 +1,12 @@
 package com.convert.model;
 
-import com.convert.model.enuns.*;
-import com.convert.model.util.*;
+import com.convert.model.enuns.Characters;
+import com.convert.model.enuns.LayoutAlign;
+import com.convert.model.enuns.StrokeAlign;
+import com.convert.model.util.Strokes;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FigmaText extends Node {
 
 //    private AbsoluteBoundingBox[] absoluteBoundingBox;

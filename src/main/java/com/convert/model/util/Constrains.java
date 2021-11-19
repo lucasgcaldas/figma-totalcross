@@ -2,7 +2,9 @@ package com.convert.model.util;
 
 import com.convert.model.enuns.Horizontal;
 import com.convert.model.enuns.Vertical;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Constrains {
 
     private Vertical vertical;

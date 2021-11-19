@@ -1,38 +1,45 @@
 package com.convert;
+
 import com.convert.model.Application;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import totalcross.io.ByteArrayStream;
 import totalcross.io.IOException;
 import totalcross.json.JSONObject;
 import totalcross.net.HttpStream;
 import totalcross.net.URI;
 import totalcross.net.ssl.SSLSocketFactory;
-import totalcross.ui.MainWindow;
-import totalcross.ui.Label;
 import totalcross.sys.Settings;
+import totalcross.ui.Label;
+import totalcross.ui.MainWindow;
+
 public class Convert extends MainWindow {
 
     public static Application application;
 
     public Convert() {
         setUIStyle(Settings.MATERIAL_UI);
+        transformToObject();
     }
 
     @Override
     public void initUI() {
         Label helloWord = new Label("Hello World!");
         add(helloWord, CENTER, CENTER);
-        transformToObject();
     }
 
     public void transformToObject() {
-        JSONObject response = connectToFigmaAPI();
-
-        Gson gson = new Gson();
-        application = gson.fromJson(String.valueOf(response), Application.class);
+        try {
+            JSONObject response = connectToFigmaAPI();
+            ObjectMapper objectMapper = new ObjectMapper();
+            application = objectMapper.readValue(response.toString(), Application.class);
+            System.out.println();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
-    public JSONObject connectToFigmaAPI(){
+    public JSONObject connectToFigmaAPI() {
         String request = "";
         try {
             HttpStream.Options o = new HttpStream.Options();

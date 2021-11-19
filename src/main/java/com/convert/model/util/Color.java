@@ -1,18 +1,14 @@
 package com.convert.model.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Color {
 
     private Double r;
     private Double g;
     private Double b;
     private Double a;
-
-    public Color(Double r, Double g, Double b, Double a) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
-    }
 
     public Double getR() {
         return r;
