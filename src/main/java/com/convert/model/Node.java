@@ -2,10 +2,7 @@ package com.convert.model;
 
 import com.convert.model.enuns.BlendMode;
 import com.convert.model.enuns.Type;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -20,20 +17,20 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = FigmaInstance.class, name = "INSTANCE"),
         @JsonSubTypes.Type(value = FigmaText.class, name = "TEXT"),
         @JsonSubTypes.Type(value = Node.class, name = "VECTOR"),
-        @JsonSubTypes.Type(value = Node.class, name = "RECTANGLE"),
+        @JsonSubTypes.Type(value = FigmaFrame.class, name = "RECTANGLE"),
         @JsonSubTypes.Type(value = Node.class, name = "GROUP"),
         @JsonSubTypes.Type(value = Node.class, name = "ELLIPSE"),
         @JsonSubTypes.Type(value = Node.class, name = "COMPONENT"),
 }
 )
+@JsonPropertyOrder("type")
 public class Node {
 
     private String id;
     private String name;
-    private Type type;
+    private String type;
     private Node[] children;
     private BlendMode blendMode;
-
 
     public String getId() {
         return id;
@@ -51,11 +48,11 @@ public class Node {
         this.name = name;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 

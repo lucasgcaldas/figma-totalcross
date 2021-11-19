@@ -10,4 +10,19 @@ public class AbsoluteBoundingBox {
     private Double width;
     private Double height;
 
+    public Double getX() {
+        return x;
+    }
+
+    public Double getY() {
+        return y;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
 }
