@@ -5,24 +5,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AbsoluteBoundingBox {
 
-    private Double x;
-    private Double y;
-    private Double width;
-    private Double height;
+    private double x;
+    private double y;
+    private double width;
+    private double height;
 
-    public Double getX() {
+    public double getX() {
         return x;
     }
 
-    public Double getY() {
+    public double getY() {
         return y;
     }
 
-    public Double getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public Double getHeight() {
+    public double getHeight() {
         return height;
     }
 }

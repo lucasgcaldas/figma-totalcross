@@ -14,6 +14,7 @@ import totalcross.ui.Button;
 import totalcross.ui.Edit;
 import totalcross.ui.Label;
 import totalcross.ui.MainWindow;
+import totalcross.ui.font.Font;
 import totalcross.ui.gfx.Color;
 
 import java.util.ArrayList;
@@ -23,25 +24,33 @@ import java.util.Objects;
 public class Convert extends MainWindow {
 
     public static Application application;
-    public static Node exportFigma, frame1;
+    public static Node exportFigma;
     public static FigmaText figmaText;
-    public static FigmaInstance figmaInstance;
-    public static FigmaFrame figmaFrame;
-    private Button button;
-    private Label label;
-    private List<Button> buttonList = new ArrayList<>();
-    private List<Label> labelList = new ArrayList<>();
+    public static FigmaInstance figmaInstance, buttonInstance;
+    public static FigmaFrame frame1, figmaFrame;
+    public static Button button;
+    public static Label label;
+    public static List<Button> buttonList = new ArrayList<>();
+    public static List<Label> labelList = new ArrayList<>();
+    public static List<FigmaInstance> figmaInstances = new ArrayList<>();
 
     public Convert() {
-        setUIStyle(Settings.MATERIAL_UI);
+//        setUIStyle(Settings.MATERIAL_UI);
         transformToObject();
     }
 
     @Override
     public void initUI() {
-        Label helloWord = new Label("Hello World!");
-        add(helloWord, CENTER, CENTER);
         createTotalCrossUI();
+        setBackColor(Color.getRGB(frame1.getBackgroundColor().getR(), frame1.getBackgroundColor().getG(), frame1.getBackgroundColor().getB()));
+
+        for (Button button : buttonList){
+            add(button, AFTER + (int) buttonInstance.getAbsoluteBoundingBox().getX(),
+                    TOP + 38,
+                    (int) buttonInstance.getAbsoluteBoundingBox().getWidth(),
+                    (int) buttonInstance.getAbsoluteBoundingBox().getHeight());
+        }
+
     }
 
     public void transformToObject() {
@@ -78,7 +87,7 @@ public class Convert extends MainWindow {
             if (Objects.equals(node.getName(), "ExportFigma")) {
                 exportFigma = node;
                 for (Node node1 : exportFigma.getChildren()) {
-                    frame1 = node1;
+                    frame1 = (FigmaFrame) node1;
                 }
             }
         }
@@ -90,25 +99,25 @@ public class Convert extends MainWindow {
                 System.out.println("tem Instance");
                 if (node.getName().equals("Button")) { // name : Button
                     for (Node instanceNode : node.getChildren()) {
+                        buttonInstance = (FigmaInstance) node;
                         if (instanceNode.getName().equals("Button")) {
                             //cria button
+                            figmaText = (FigmaText) instanceNode;
                             Button button = new Button(instanceNode.getName());
+                            button.setFont(Font.getFont(figmaText.getStyle().getFontFamily(), true, figmaText.getStyle().getFontSize()));
+                            button.setBackForeColors(Color.WHITE, Color.getRGB(frame1.getBackgroundColor().getR(), frame1.getBackgroundColor().getG(), frame1.getBackgroundColor().getB()));
+                            button.setBorder(BORDER_ROUNDED);
+                            button.roundBorderFactor = 2;
                             buttonList.add(button);
                             System.out.println("#tem button");
                         }
                     }
                 } else if (node.getName().equals("Edit")) { // name : Edit
                     figmaInstance = (FigmaInstance) node;
+                    figmaInstances.add(figmaInstance);
                     Edit edit = new Edit();
                     edit.setBackColor(Color.WHITE);
-//                    figmaInstance.getAbsoluteBoundingBox().getHeight();
-//                    figmaInstance.getAbsoluteBoundingBox().getWidth();
-//                    figmaInstance.getAbsoluteBoundingBox().getX();
-//                    figmaInstance.getAbsoluteBoundingBox().getY();
-//                    figmaInstance.getConstrains().getHorizontal();
-//                    System.out.println(figmaInstance.getConstrains().getVertical());
-
-                    for (Node instanceNode : node.getChildren()) {
+                    for (Node instanceNode : figmaInstance.getChildren()) {
                         if (instanceNode.getClass().toString().contains("Text")) {
                             figmaText = (FigmaText) instanceNode;
                             //cria text

@@ -36,7 +36,7 @@ public class FigmaFrame extends Node {
         return absoluteBoundingBox;
     }
 
-    public Constraints getConstrains() {
+    public Constraints getConstraints() {
         return constraints;
     }
 }
