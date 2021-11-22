@@ -3,6 +3,7 @@ package com.convert.model;
 import com.convert.model.enuns.Characters;
 import com.convert.model.enuns.LayoutAlign;
 import com.convert.model.enuns.StrokeAlign;
+import com.convert.model.util.AbsoluteBoundingBox;
 import com.convert.model.util.Strokes;
 import com.convert.model.util.Style;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FigmaText extends Node {
 
-//    private AbsoluteBoundingBox[] absoluteBoundingBox;
+    private AbsoluteBoundingBox absoluteBoundingBox;
 //    private Constrains[] constraints;
     private LayoutAlign layoutAlign;
     private Double layoutGrow;
@@ -31,5 +32,9 @@ public class FigmaText extends Node {
 
     public Style getStyle() {
         return style;
+    }
+
+    public AbsoluteBoundingBox getAbsoluteBoundingBox() {
+        return absoluteBoundingBox;
     }
 }

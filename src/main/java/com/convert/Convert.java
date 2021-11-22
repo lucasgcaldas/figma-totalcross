@@ -10,10 +10,7 @@ import totalcross.net.HttpStream;
 import totalcross.net.URI;
 import totalcross.net.ssl.SSLSocketFactory;
 import totalcross.sys.Settings;
-import totalcross.ui.Button;
-import totalcross.ui.Edit;
-import totalcross.ui.Label;
-import totalcross.ui.MainWindow;
+import totalcross.ui.*;
 import totalcross.ui.font.Font;
 import totalcross.ui.gfx.Color;
 
@@ -25,32 +22,65 @@ public class Convert extends MainWindow {
 
     public static Application application;
     public static Node exportFigma;
-    public static FigmaText figmaText;
+    public static FigmaText figmaText, figmaText2;
     public static FigmaInstance figmaInstance, buttonInstance;
-    public static FigmaFrame frame1, figmaFrame;
+    public static FigmaFrame frame1, frame2;
     public static Button button;
-    public static Label label;
+    public static Label label, label1;
+    public static Edit edit;
     public static List<Button> buttonList = new ArrayList<>();
+    public static List<Container> containerList = new ArrayList<>();
     public static List<Label> labelList = new ArrayList<>();
+    public static List<Label> labelTextList = new ArrayList<>();
+    public static List<Edit> editList = new ArrayList<>();
     public static List<FigmaInstance> figmaInstances = new ArrayList<>();
 
     public Convert() {
-//        setUIStyle(Settings.MATERIAL_UI);
+        setUIStyle(Settings.uiStyle);
         transformToObject();
     }
 
     @Override
     public void initUI() {
         createTotalCrossUI();
-        setBackColor(Color.getRGB(frame1.getBackgroundColor().getR(), frame1.getBackgroundColor().getG(), frame1.getBackgroundColor().getB()));
+        setBackForeColors(Color.getRGB(frame1.getBackgroundColor().getR(), frame1.getBackgroundColor().getG(), frame1.getBackgroundColor().getB()), Color.WHITE);
 
-        for (Button button : buttonList){
+        for (Button button : buttonList) {
             add(button, AFTER + (int) buttonInstance.getAbsoluteBoundingBox().getX(),
                     TOP + 38,
                     (int) buttonInstance.getAbsoluteBoundingBox().getWidth(),
                     (int) buttonInstance.getAbsoluteBoundingBox().getHeight());
         }
 
+        int i = 0;
+        for (Edit edit : editList) {
+            Convert.edit = editList.get(i);
+            add(edit, (int) figmaInstance.getAbsoluteBoundingBox().getX() * (-1),
+                    (int) figmaInstance.getAbsoluteBoundingBox().getY() * (-1) + 39,
+                    (int) figmaInstance.getAbsoluteBoundingBox().getWidth(),
+                    (int) (figmaInstance.getAbsoluteBoundingBox().getHeight() - figmaText.getAbsoluteBoundingBox().getHeight()));
+            i++;
+        }
+
+        for (Label label : labelList) {
+            add(label, SAME, BEFORE);
+        }
+
+        i = 0;
+        for (Label label : labelTextList) {
+            if (i == 0) {
+                add(label, LEFT + 31, AFTER + 50, edit);
+                i++;
+            } else {
+                add(label, SAME, AFTER + 50);
+            }
+        }
+
+        for (Container container : containerList) {
+            add(container, CENTER, AFTER + 50,
+                    (int) frame2.getAbsoluteBoundingBox().getWidth(),
+                    (int) frame2.getAbsoluteBoundingBox().getHeight());
+        }
     }
 
     public void transformToObject() {
@@ -58,7 +88,6 @@ public class Convert extends MainWindow {
             JSONObject response = connectToFigmaAPI();
             ObjectMapper objectMapper = new ObjectMapper();
             application = objectMapper.readValue(response.toString(), Application.class);
-            System.out.println();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -93,10 +122,8 @@ public class Convert extends MainWindow {
         }
 
         for (Node node : frame1.getChildren()) {
-//            System.out.println(node.getName() + " " + node.getClass().toString().substring(24));
             if (node.getClass().toString().contains("Instance")) {
                 //cria instancia
-                System.out.println("tem Instance");
                 if (node.getName().equals("Button")) { // name : Button
                     for (Node instanceNode : node.getChildren()) {
                         buttonInstance = (FigmaInstance) node;
@@ -109,29 +136,39 @@ public class Convert extends MainWindow {
                             button.setBorder(BORDER_ROUNDED);
                             button.roundBorderFactor = 2;
                             buttonList.add(button);
-                            System.out.println("#tem button");
                         }
                     }
                 } else if (node.getName().equals("Edit")) { // name : Edit
                     figmaInstance = (FigmaInstance) node;
                     figmaInstances.add(figmaInstance);
                     Edit edit = new Edit();
-                    edit.setBackColor(Color.WHITE);
+                    editList.add(edit);
                     for (Node instanceNode : figmaInstance.getChildren()) {
                         if (instanceNode.getClass().toString().contains("Text")) {
                             figmaText = (FigmaText) instanceNode;
                             //cria text
-                            Label label = new Label(figmaText.getCharacters());
-                            System.out.println("#tem text");
+                            label = new Label(figmaText.getCharacters());
+                            label.setFont(Font.getFont(figmaText.getStyle().getFontFamily(), true, figmaText.getStyle().getFontSize()));
+                            label.setForeColor(Color.WHITE);
+                            labelList.add(label);
                         }
                     }
                 }
             } else if (node.getClass().toString().contains("Text")) {
                 //cria text
-                System.out.println("tem Text");
+                figmaText2 = (FigmaText) node;
+                label1 = new Label(figmaText2.getCharacters());
+                label1.setFont(Font.getFont(figmaText2.getStyle().getFontFamily(), true, figmaText2.getStyle().getFontSize()));
+                label1.setFont(Font.getFont(figmaText2.getStyle().getFontFamily(), true, figmaText2.getStyle().getFontSize()));
+                label1.setForeColor(Color.WHITE);
+                labelTextList.add(label1);
             } else if (node.getClass().toString().contains("Frame")) {
                 //cria frame
-                System.out.println("tem Frame");
+                frame2 = (FigmaFrame) node;
+                Container container = new Container();
+                container.setBackForeColors(Color.getRGB(frame2.getBackgroundColor().getR(), frame2.getBackgroundColor().getG(), frame2.getBackgroundColor().getB()),
+                        Color.getRGB(frame2.getBackgroundColor().getR(), frame2.getBackgroundColor().getG(), frame2.getBackgroundColor().getB()));
+                containerList.add(container);
             }
         }
     }
