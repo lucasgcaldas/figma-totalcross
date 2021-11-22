@@ -2,7 +2,6 @@ package com.convert;
 
 import com.convert.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import totalcross.io.ByteArrayStream;
 import totalcross.io.IOException;
@@ -23,18 +22,16 @@ public class Convert extends MainWindow {
 
     public static Application application;
     public static Node exportFigma;
-    public static FigmaText figmaText, figmaText2;
-    public static FigmaInstance figmaInstance, buttonInstance;
+    public static FigmaText figmaText;
     public static FigmaFrame frame1, frame2;
     public static Button button;
-    public static Label label, label1;
+    public static Label label;
     public static Edit edit;
     public static List<Button> buttonList = new ArrayList<>();
     public static List<Container> containerList = new ArrayList<>();
     public static List<Label> labelList = new ArrayList<>();
     public static List<Label> labelTextList = new ArrayList<>();
     public static List<Edit> editList = new ArrayList<>();
-    public static List<FigmaInstance> figmaInstances = new ArrayList<>();
 
     public Convert() {
         setUIStyle(Settings.uiStyle);
@@ -43,45 +40,46 @@ public class Convert extends MainWindow {
 
     @Override
     public void initUI() {
-        createTotalCrossUI();
+        createTotalCrossUIByType();
         setBackForeColors(Color.getRGB(frame1.getBackgroundColor().getR(), frame1.getBackgroundColor().getG(), frame1.getBackgroundColor().getB()), Color.WHITE);
 
-        for (Button button : buttonList) {
-            add(button, AFTER + (int) buttonInstance.getAbsoluteBoundingBox().getX(),
-                    TOP + 38,
-                    (int) buttonInstance.getAbsoluteBoundingBox().getWidth(),
-                    (int) buttonInstance.getAbsoluteBoundingBox().getHeight());
-        }
+        // Container 1
+        add(containerList.get(0), CENTER, CENTER, (int) frame1.getAbsoluteBoundingBox().getWidth(), (int) frame1.getAbsoluteBoundingBox().getHeight());
+
+        containerList.get(0).add(buttonList.get(0), AFTER + 26, TOP + 38, 151,50);
+        containerList.get(0).add(buttonList.get(1), AFTER + 38, SAME, 151,50);
 
         int i = 0;
         for (Edit edit : editList) {
             Convert.edit = editList.get(i);
-            add(edit, (int) figmaInstance.getAbsoluteBoundingBox().getX() * (-1),
-                    (int) figmaInstance.getAbsoluteBoundingBox().getY() * (-1) + 39,
-                    (int) figmaInstance.getAbsoluteBoundingBox().getWidth(),
-                    (int) (figmaInstance.getAbsoluteBoundingBox().getHeight() - figmaText.getAbsoluteBoundingBox().getHeight()));
+            containerList.get(0).add(edit, LEFT + 101,
+                    TOP + 147,
+                    169,
+                    38);
             i++;
         }
 
         for (Label label : labelList) {
-            add(label, SAME, BEFORE);
+            containerList.get(0).add(label, SAME, BEFORE);
         }
 
         i = 0;
         for (Label label : labelTextList) {
             if (i == 0) {
-                add(label, LEFT + 31, AFTER + 50, edit);
+                containerList.get(0).add(label, LEFT + 31, AFTER + 50, edit);
                 i++;
             } else {
-                add(label, SAME, AFTER + 50);
+                containerList.get(0).add(label, SAME, AFTER + 50);
             }
         }
 
-        for (Container container : containerList) {
-            add(container, CENTER, AFTER + 50,
-                    (int) frame2.getAbsoluteBoundingBox().getWidth(),
-                    (int) frame2.getAbsoluteBoundingBox().getHeight());
-        }
+        // Container 2
+        add(containerList.get(1), LEFT + 40, TOP + 334, 320, 280);
+        containerList.get(1).add(buttonList.get(2), LEFT + 26, TOP + 38, 151, 50);
+
+        // Container 3
+        containerList.get(1).add(containerList.get(2), LEFT, TOP + 124, 320, 119);
+        containerList.get(2).add(buttonList.get(3), LEFT + 26, TOP + 38, 151, 50);
     }
 
     public void transformToObject() {
@@ -113,70 +111,63 @@ public class Convert extends MainWindow {
         return new JSONObject(request);
     }
 
-    public void createTotalCrossUI() {
+    public void createTotalCrossUIByType() {
         for (Node node : application.getDocument().getChildren()) {
             if (Objects.equals(node.getName(), "ExportFigma")) {
                 exportFigma = node;
                 System.out.println();
                 for (Node node1 : exportFigma.getChildren()) {
                     frame1 = (FigmaFrame) node1;
+                    Container container = new Container();
+                    containerList.add(container);
                 }
             }
         }
-
-        for (Node node : frame1.getChildren()) {
-            if (node.getClass().toString().contains("Instance")) {
-                //cria instancia
-                if (node.getName().equals("Button")) { // name : Button
-                    for (Node instanceNode : node.getChildren()) {
-                        buttonInstance = (FigmaInstance) node;
-                        if (instanceNode.getName().equals("Button")) {
-                            //cria button
-                            figmaText = (FigmaText) instanceNode;
-                            Button button = new Button(instanceNode.getName());
-                            button.setFont(Font.getFont(figmaText.getStyle().getFontFamily(), true, figmaText.getStyle().getFontSize()));
-                            button.setBackForeColors(Color.WHITE, Color.getRGB(frame1.getBackgroundColor().getR(), frame1.getBackgroundColor().getG(), frame1.getBackgroundColor().getB()));
-                            button.setBorder(BORDER_ROUNDED);
-                            button.roundBorderFactor = 2;
-                            buttonList.add(button);
-                        }
-                    }
-                } else if (node.getName().equals("Edit")) { // name : Edit
-                    figmaInstance = (FigmaInstance) node;
-                    figmaInstances.add(figmaInstance);
-                    Edit edit = new Edit();
-                    editList.add(edit);
-                    for (Node instanceNode : figmaInstance.getChildren()) {
-                        if (instanceNode.getClass().toString().contains("Text")) {
-                            figmaText = (FigmaText) instanceNode;
-                            //cria text
-                            label = new Label(figmaText.getCharacters());
-                            label.setFont(Font.getFont(figmaText.getStyle().getFontFamily(), true, figmaText.getStyle().getFontSize()));
-                            label.setForeColor(Color.WHITE);
-                            labelList.add(label);
-                        }
-                    }
-                }
-            } else if (node.getClass().toString().contains("Text")) {
-                //cria text
-                figmaText2 = (FigmaText) node;
-                label1 = new Label(figmaText2.getCharacters());
-                label1.setFont(Font.getFont(figmaText2.getStyle().getFontFamily(), true, figmaText2.getStyle().getFontSize()));
-                label1.setFont(Font.getFont(figmaText2.getStyle().getFontFamily(), true, figmaText2.getStyle().getFontSize()));
-                label1.setForeColor(Color.WHITE);
-                labelTextList.add(label1);
-            } else if (node.getClass().toString().contains("Frame")) {
-                //cria frame
-                frame2 = (FigmaFrame) node;
-                Container container = new Container();
-                container.setBackForeColors(Color.getRGB(frame2.getBackgroundColor().getR(), frame2.getBackgroundColor().getG(), frame2.getBackgroundColor().getB()),
-                        Color.getRGB(frame2.getBackgroundColor().getR(), frame2.getBackgroundColor().getG(), frame2.getBackgroundColor().getB()));
-                containerList.add(container);
-            }
-        }
+        recursiveMethod(frame1);
     }
 
-    public void createTotalCrossUIByType() {
-
+    public void recursiveMethod(Node frame1) {
+        for (Node node : frame1.getChildren()) {
+            switch (node.getType()) {
+                case "FRAME":
+                    switch (node.getName()) {
+                        case "Frame 2":
+                        case "Frame 3":
+                            frame2 = (FigmaFrame) node;
+                            Container container = new Container();
+                            container.setBackForeColors(Color.getRGB(frame2.getBackgroundColor().getR(), frame2.getBackgroundColor().getG(), frame2.getBackgroundColor().getB()), Color.WHITE );
+                            containerList.add(container);
+                            recursiveMethod(node);
+                            break;
+                    }
+                case "INSTANCE":
+                    if (node.getName().equals("Button")) {
+                        Button button = new Button(node.getName());
+                        button.setFont(Font.getFont("Roboto-Medium", true, 18));
+                        button.setBackForeColors(Color.WHITE, Color.getRGB(Convert.frame1.getBackgroundColor().getR(), Convert.frame1.getBackgroundColor().getG(), Convert.frame1.getBackgroundColor().getB()));
+                        button.setBorder(BORDER_ROUNDED);
+                        button.roundBorderFactor = 2;
+                        buttonList.add(button);
+                    } else if (node.getName().equals("Edit")) {
+                        Edit edit = new Edit();
+                        editList.add(edit);
+                        recursiveMethod(node);
+                    }
+                case "TEXT":
+                    if (node.getName().equals("TEXTO")) {
+                        figmaText = (FigmaText) node;
+                        label = new Label(figmaText.getCharacters());
+                        label.setFont(Font.getFont(figmaText.getStyle().getFontFamily(), true, figmaText.getStyle().getFontSize()));
+                        label.setForeColor(Color.WHITE);
+                        labelTextList.add(label);
+                    } else if (node.getName().equals("Label:")){
+                        figmaText = (FigmaText) node;
+                        label = new Label(figmaText.getCharacters());
+                        label.setFont(Font.getFont(figmaText.getStyle().getFontFamily(), true, figmaText.getStyle().getFontSize()));
+                        label.setForeColor(Color.WHITE);
+                        labelList.add(label);
+                    }
+            }
+        }
     }
 }
