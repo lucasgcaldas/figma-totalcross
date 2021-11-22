@@ -6,7 +6,7 @@ public class Document {
 
     private String id;
     private String name;
-    private String type;
+    private Type type;
     private Node[] children;
 
     public String getId() {
@@ -17,7 +17,7 @@ public class Document {
         return name;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 

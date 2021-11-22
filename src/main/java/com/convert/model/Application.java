@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Application {
 
     private Document document;
-//    private Components[] components;
-//    private String[] componentSets;
     private Integer schemaVersion;
-//    private Style[] styles;
     private String name;
     private String lastModified;
     private String thumbnailUrl;

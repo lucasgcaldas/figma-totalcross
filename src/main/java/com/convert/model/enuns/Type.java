@@ -1,8 +1,9 @@
 package com.convert.model.enuns;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonRootName(value = "type")
 public enum Type {
 
     DOCUMENT,

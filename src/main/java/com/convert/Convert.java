@@ -2,6 +2,7 @@ package com.convert;
 
 import com.convert.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import totalcross.io.ByteArrayStream;
 import totalcross.io.IOException;
@@ -88,6 +89,7 @@ public class Convert extends MainWindow {
             JSONObject response = connectToFigmaAPI();
             ObjectMapper objectMapper = new ObjectMapper();
             application = objectMapper.readValue(response.toString(), Application.class);
+            System.out.println();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -115,6 +117,7 @@ public class Convert extends MainWindow {
         for (Node node : application.getDocument().getChildren()) {
             if (Objects.equals(node.getName(), "ExportFigma")) {
                 exportFigma = node;
+                System.out.println();
                 for (Node node1 : exportFigma.getChildren()) {
                     frame1 = (FigmaFrame) node1;
                 }
@@ -171,5 +174,9 @@ public class Convert extends MainWindow {
                 containerList.add(container);
             }
         }
+    }
+
+    public void createTotalCrossUIByType() {
+
     }
 }
