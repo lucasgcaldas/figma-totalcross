@@ -21,6 +21,11 @@ import totalcross.ui.gfx.Color;
 
 import java.util.Objects;
 
+/**
+ * Class responsible to connect
+ * to figma API and create objects
+ * @author Lucas Gomes
+ */
 public class ConnectFigma {
 
     /**

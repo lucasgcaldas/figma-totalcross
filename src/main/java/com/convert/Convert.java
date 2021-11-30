@@ -11,6 +11,12 @@ import totalcross.ui.gfx.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that extends MainWindow
+ * responsible for convert the code
+ * in totalcross UI
+ * @author Lucas Gomes
+ */
 public class Convert extends MainWindow {
 
     public static Application application;
@@ -24,11 +30,20 @@ public class Convert extends MainWindow {
     public static List<Edit> editList = new ArrayList<>();
     ConnectFigma connectFigma = new ConnectFigma();
 
+    /**
+     * Convert constructor setting
+     * the UI style and getting connect
+     * to method transformToObject
+     */
     public Convert() {
         setUIStyle(Settings.uiStyle);
         connectFigma.transformToObject();
     }
 
+    /**
+     * Method responsible for add all
+     * components in screen
+     */
     @Override
     public void initUI() {
         connectFigma.createTotalCrossUIByType();

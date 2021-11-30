@@ -2,8 +2,13 @@ package com.convert.model;
 
 import com.convert.model.util.Color;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
+/**
+ * Class that extends Node and is
+ * responsible to instantiate
+ * a FigmaCanvas from Figma API
+ * @author Lucas Gomes
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FigmaCanvas extends Node {
 

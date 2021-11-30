@@ -2,6 +2,11 @@ package com.convert.model.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Class responsible for instantiate
+ * a AbsoluteBoundingBox proprieties
+ * @author Lucas Gomes
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AbsoluteBoundingBox {
 

@@ -2,6 +2,11 @@ package com.convert.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Class responsible to instantiate
+ * an Application from Figma API
+ * @author Lucas Gomes
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Application {
 

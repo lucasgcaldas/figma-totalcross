@@ -1,10 +1,14 @@
 package com.convert.model;
 
 import com.convert.model.enuns.BlendMode;
-import com.convert.model.enuns.Type;
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * Class that extends Node and is
+ * responsible to create a figma
+ * node by Type
+ * @author Lucas Gomes
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
@@ -27,15 +31,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Node {
 
-    @JsonProperty ("id")
+    @JsonProperty("id")
     private String id;
-    @JsonProperty ("name")
+    @JsonProperty("name")
     private String name;
-    @JsonProperty ("type")
+    @JsonProperty("type")
     private String type;
-    @JsonProperty ("children")
+    @JsonProperty("children")
     private Node[] children;
-    @JsonProperty ("blendMode")
+    @JsonProperty("blendMode")
     private BlendMode blendMode;
 
 

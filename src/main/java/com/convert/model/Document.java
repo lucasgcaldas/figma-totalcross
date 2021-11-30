@@ -2,6 +2,11 @@ package com.convert.model;
 
 import com.convert.model.enuns.Type;
 
+/**
+ * Class responsible to instantiate
+ * a Document from Figma API
+ * @author Lucas Gomes
+ */
 public class Document {
 
     private String id;

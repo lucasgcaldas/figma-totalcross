@@ -1,10 +1,15 @@
 package com.convert.model;
 
-import com.convert.model.enuns.BlendMode;
 import com.convert.model.util.AbsoluteBoundingBox;
 import com.convert.model.util.Style;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Class that extends Node and
+ * is responsible to instantiate
+ * a FigmaText from Figma API
+ * @author Lucas Gomes
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FigmaText extends Node {
 

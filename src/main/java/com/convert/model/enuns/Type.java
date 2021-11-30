@@ -1,8 +1,12 @@
 package com.convert.model.enuns;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+/**
+ * Enum responsible for instantiate
+ * a set of Type
+ * @author Lucas Gomes
+ */
 @JsonRootName(value = "type")
 public enum Type {
 

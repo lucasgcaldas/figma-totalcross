@@ -1,10 +1,16 @@
 package com.convert.model;
 
-import com.convert.model.enuns.BlendMode;
-import com.convert.model.util.*;
+import com.convert.model.util.AbsoluteBoundingBox;
+import com.convert.model.util.Color;
+import com.convert.model.util.Constraints;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
+/**
+ * Class that extends Node and is
+ * responsible to instantiate
+ * a FigmaFrame from Figma API
+ * @author Lucas Gomes
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FigmaFrame extends Node {
 
