@@ -1,7 +1,6 @@
 package com.convert;
 
 import totalcross.TotalCrossApplication;
-import totalcross.util.Properties;
 
 public class RunConvertApplication {
     public static void main(String[] args) {
